@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<title>S DEEP Studio</title>
+<style>
+:root{--bg:#0F0F0F;--card:#1F1F1F;--card2:#181818;--line:#303030;--txt:#F1F1F1;--mut:#AAA;--red:#FF0000;--blue:#3EA6FF;--green:#2BA640;--amber:#F5B301;--bad:#FF4E45}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,"Noto Sans Devanagari",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:14px}
+body{padding-bottom:env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:30;background:#212121;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 14px 0}
+.hrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{width:36px;height:28px;border-radius:8px;background:var(--red);display:grid;place-items:center;font-size:12px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#0F0F0F;font-weight:800;display:grid;place-items:center}
+.ttl{font-weight:800;font-size:15px}.sub{font-size:11px;color:var(--mut)}
+.sp{flex:1}
+.chip{font-size:11px;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:#282828;white-space:nowrap}
+.chip.ok{color:#5BD16F;border-color:#2BA64066;background:#2BA64022}.chip.bad{color:#FF8A83;border-color:#FF4E4566;background:#FF4E4522}.chip.warn{color:#F5B301;border-color:#F5B30166;background:#F5B30122}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:10px 0 8px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;background:none;border:0;color:#CCC;padding:8px 12px;border-radius:10px;font:600 12px inherit;font-family:inherit;cursor:pointer;white-space:nowrap}
+.tabs button.on{background:#282828;color:#FF6B63;box-shadow:inset 0 -2px 0 var(--red)}
+main{max-width:900px;margin:0 auto;padding:14px}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+h2{font-size:16px;margin:2px 0 10px}h3{font-size:13px;margin:14px 0 8px;color:#DDD}
+.mut{color:var(--mut)}.small{font-size:11px}
+.btn{background:#282828;color:#fff;border:1px solid #3E3E3E;border-radius:10px;padding:9px 13px;font:600 13px inherit;font-family:inherit;cursor:pointer}
+.btn.pri{background:var(--red);border-color:var(--red)}.btn.blue{background:#0b5cad;border-color:#0b5cad}.btn:disabled{opacity:.5}
+.btn.sm{padding:6px 10px;font-size:12px}
+input,select,textarea{width:100%;background:#121212;color:#fff;border:1px solid #3E3E3E;border-radius:10px;padding:10px;font:14px inherit;font-family:inherit}
+label{display:block;font-size:11px;color:var(--mut);margin:10px 0 4px}
+.grid{display:grid;gap:10px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:560px){.g4{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px}.kpi b{display:block;font-size:20px;margin-top:2px}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.seg button{background:#222;border:1px solid var(--line);color:#ccc;border-radius:99px;padding:6px 12px;font:600 12px inherit;font-family:inherit;cursor:pointer}.seg button.on{background:#fff;color:#000;border-color:#fff}
+.day{font-weight:800;font-size:12px;color:var(--mut);margin:14px 2px 6px;text-transform:uppercase;letter-spacing:.04em}
+.job{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:12px;padding:11px 12px;margin-bottom:8px;color:inherit;font:inherit;cursor:pointer}
+.job.long{border-left-color:var(--blue)}.job.community{border-left-color:var(--amber)}
+.job .t{font-weight:700;margin:4px 0;line-height:1.35}
+.pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.pill{font-size:10.5px;padding:2px 7px;border-radius:99px;background:#2a2a2a;color:#aaa}.pill.y{background:#2BA64026;color:#5BD16F}.pill.w{background:#F5B30122;color:#F5B301}.pill.r{background:#FF4E4524;color:#FF8A83}
+.kind{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:6px;background:#FF000030;color:#FF8A83}.kind.long{background:#3EA6FF30;color:#8CCBFF}.kind.community{background:#F5B30030;color:#F5B301}
+.bar{display:grid;grid-template-columns:96px 1fr 46px;gap:8px;align-items:center;margin:6px 0;font-size:12px}
+.bar i{display:block;height:10px;border-radius:6px;background:linear-gradient(90deg,#FF4E45,#FF0000)}.bar.b i{background:linear-gradient(90deg,#3EA6FF,#0b5cad)}
+.bar span.l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mut);font-weight:600}
+.scroll{overflow-x:auto}
+.sheet{position:fixed;inset:0;z-index:50;background:#000a;display:none;align-items:flex-end;justify-content:center}.sheet.on{display:flex}
+.sheet .in{background:#1b1b1b;border:1px solid var(--line);border-radius:18px 18px 0 0;width:100%;max-width:760px;max-height:88vh;overflow:auto;padding:16px 16px calc(20px + env(safe-area-inset-bottom))}
+pre{white-space:pre-wrap;word-break:break-word;background:#121212;border:1px solid var(--line);border-radius:10px;padding:10px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:6px 0}
+.script{white-space:pre-wrap;line-height:1.6;background:#121212;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+.sw{display:flex;gap:6px;flex-wrap:wrap}.sw button{border:2px solid transparent;border-radius:99px;padding:5px 10px;font:600 11px inherit;font-family:inherit;color:#fff;background:#2a2a2a;cursor:pointer}.sw button.on{border-color:#fff}
+canvas{max-width:100%;height:auto;border-radius:12px;background:#000;display:block}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;padding:9px 16px;border-radius:99px;font-weight:700;z-index:99;display:none}
+.banner{border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.5}.banner.bad{background:#FF4E4522;border:1px solid #FF4E4566}.banner.warn{background:#F5B30120;border:1px solid #F5B30160}.banner.info{background:#3EA6FF1c;border:1px solid #3EA6FF55}
+a{color:var(--blue)}
+.steps li{margin:6px 0;line-height:1.5}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="logo">▶</div><div class="avatar">SD</div>
+    <div><div class="ttl">S DEEP Studio</div><div class="sub">@sdeepworldwide · Finance &amp; Share Market · Free Automation</div></div>
+    <div class="sp"></div>
+    <span id="st" class="chip">Not connected</span>
+    <button class="btn sm" id="installBtn" style="display:none">📲 Install</button>
+    <button class="btn sm" id="refreshBtn">⟳</button>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button data-tab="calendar" class="on">📅 Calendar</button>
+    <button data-tab="analytics">📈 Analytics</button>
+    <button data-tab="plan">🧠 Next Plan</button>
+    <button data-tab="host">👤 AI Host</button>
+    <button data-tab="thumb">🖼 Thumbnail</button>
+    <button data-tab="setup">⚙ Setup &amp; Run</button>
+  </nav>
+</header>
+<main>
+  <div id="banners"></div>
+
+  <section class="panel on" id="p-calendar">
+    <div class="seg" id="weekSeg"><button data-w="0" class="on">Is hafte</button><button data-w="1">Agle hafte</button><button data-w="-1">Pichhle hafte</button></div>
+    <div class="seg" id="kindSeg"><button data-k="all" class="on">All</button><button data-k="short">Shorts</button><button data-k="long">Long</button><button data-k="community">Community</button></div>
+    <div id="calList"></div>
+  </section>
+
+  <section class="panel" id="p-analytics">
+    <div class="grid g4" id="kpis"></div>
+    <div class="card" style="margin-top:12px"><h2>Views per video</h2><div id="viewBars"></div></div>
+    <div class="card"><h2>Channel growth</h2><div id="growth"></div></div>
+    <div class="card"><h2>Kya better chal raha hai (average)</h2><div id="groups"></div><p class="small mut">Sample chhota hota hai, isliye ise sirf indication samjhein.</p></div>
+    <div class="card"><h2>Saare videos</h2><div class="scroll"><table id="vtable"></table></div></div>
+  </section>
+
+  <section class="panel" id="p-plan">
+    <div id="planBox"></div>
+  </section>
+
+  <section class="panel" id="p-host">
+    <div class="card">
+      <h2>AI Host wardrobe</h2>
+      <p class="mut small">Chehra aur pose same rehta hai. Engine har video mein turban/jacket ka rang automatic badalta hai. Yahan preview dekhein.</p>
+      <canvas id="hostCanvas" width="724" height="543"></canvas>
+      <div id="hostMsg" class="small mut" style="margin-top:6px"></div>
+      <h3>Turban</h3><div class="sw" id="turbanSw"></div>
+      <h3>Jacket</h3><div class="sw" id="jacketSw"></div>
+    </div>
+    <div class="card"><h2>Recent looks (engine ne use kiye)</h2><div id="recentLooks" class="small mut">—</div></div>
+  </section>
+
+  <section class="panel" id="p-thumb">
+    <div class="card">
+      <h2>Thumbnail Maker (1280×720)</h2>
+      <canvas id="thCanvas" width="1280" height="720"></canvas>
+      <label>Headline (2-4 words, Roman)</label><input id="thText" value="Nifty ka bada signal">
+      <div class="grid g2"><div><label>Badge</label><input id="thBadge" value="BREAKING"></div>
+      <div><label>Photo source</label><select id="thSrc"><option value="repo">Repo host photo</option><option value="upload">Upload photo</option></select></div></div>
+      <input type="file" id="thFile" accept="image/*" style="display:none;margin-top:8px">
+      <label>Theme</label><div class="sw" id="thTheme"></div>
+      <div class="small mut" style="margin-top:8px">Look (turban/jacket) AI Host tab se chuni hui rahegi.</div>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn pri" id="thDl">⬇ Download PNG</button></div>
+      <p class="small mut">Engine har video ke liye yahi design khud banata hai (headline/badge/theme script se aate hain).</p>
+    </div>
+  </section>
+
+  <section class="panel" id="p-setup">
+    <div class="card">
+      <h2>1. Engine se connect karein</h2>
+      <p class="small mut">Ye page public hai par isme koi data nahi. Token sirf aapke phone ke browser mein rehta hai aur sirf api.github.com ko jata hai.</p>
+      <label>Engine repo (username/repo)</label><input id="repo" placeholder="singhgreen1222-del/sdeep" autocapitalize="off">
+      <label>Branch</label><input id="branch" value="main">
+      <label>GitHub token (fine-grained: Contents Read, Actions Read &amp; Write)</label><input id="token" type="password" placeholder="github_pat_..." autocapitalize="off">
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn pri" id="saveCfg">Save &amp; Connect</button><button class="btn" id="clearCfg">Disconnect</button></div>
+      <div id="cfgMsg" class="small" style="margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <h2>2. Engine chalao</h2>
+      <div class="grid g3">
+        <button class="btn" data-run="dryrun">🧪 Dry-run<br><span class="small mut">1 test Short, upload nahi</span></button>
+        <button class="btn" data-run="daily">🎬 Daily<br><span class="small mut">agle 48 ghante</span></button>
+        <button class="btn" data-run="weekly">🧠 Weekly<br><span class="small mut">analytics + plan</span></button>
+      </div>
+      <h3>Recent runs</h3><div id="runs" class="small mut">—</div>
+    </div>
+    <div class="card">
+      <h2>Checklist</h2>
+      <ol class="steps small">
+        <li>Repo <b>private</b> ho aur usme engine files + <code>.github/workflows/weekly.yml</code> ho.</li>
+        <li>Secrets: <code>GEMINI_API_KEY</code>, <code>YT_CLIENT_ID</code>, <code>YT_CLIENT_SECRET</code>, <code>YT_REFRESH_TOKEN</code>.</li>
+        <li>Pehle <b>Dry-run</b> chalayein: Actions run page se video artifact download karke dekhein.</li>
+        <li>Phir <b>Daily</b>. Uske baad roz 02:00 IST aur har Saturday 10:00 IST automatic chalega.</li>
+      </ol>
+      <div class="banner warn small">YouTube API project unverified ho to videos <b>private</b> reh sakte hain. Tab YouTube Studio se publish karna padega (Analytics tab mein warning dikhegi).</div>
+    </div>
+  </section>
+</main>
+
+<div class="sheet" id="sheet"><div class="in" id="sheetIn"></div></div>
+<div id="toast"></div>
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const LS={get:k=>{try{return localStorage.getItem(k)||""}catch(e){return ""}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+let cfg={repo:LS.get("sd_repo"),branch:LS.get("sd_branch")||"main",token:LS.get("sd_token")};
+let D={state:null,ana:null,ins:null,hist:null,runs:null,err:""};
+let weekOff=0,kindF="all",hostImg=null,upImg=null,look={t:"original",j:"original"},th={theme:"bullish"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const IST=5.5*3600e3;
+const DAYF=new Intl.DateTimeFormat("en-IN",{weekday:"short",day:"numeric",month:"short",timeZone:"Asia/Kolkata"});
+const TIMEF=new Intl.DateTimeFormat("en-IN",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:"Asia/Kolkata"});
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",2400)}
+function copy(t,l){const done=()=>toast((l||"Text")+" copied");if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done).catch(()=>fb())}else fb();function fb(){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");done()}catch(e){toast("Copy fail")}a.remove()}}
+function ago(iso){const s=(Date.now()-Date.parse(iso))/1e3;if(s<90)return"abhi";if(s<3600)return Math.round(s/60)+" min pehle";if(s<86400)return Math.round(s/3600)+" ghante pehle";return Math.round(s/86400)+" din pehle"}
+const connected=()=>cfg.repo&&cfg.token;
+const HD=a=>({Authorization:"Bearer "+cfg.token,Accept:a||"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"});
+async function gh(path,opt={}){const r=await fetch("https://api.github.com"+path,{cache:"no-store",...opt,headers:{...HD(),...(opt.headers||{})}});if(!r.ok){const e=new Error("HTTP "+r.status);e.status=r.status;throw e}return r.status===204?null:r.json()}
+async function ghRaw(path,as){const r=await fetch(`https://api.github.com/repos/${cfg.repo}/contents/${path}?ref=${encodeURIComponent(cfg.branch)}`,{cache:"no-store",headers:HD("application/vnd.github.raw+json")});if(!r.ok){const e=new Error("HTTP "+r.status);e.status=r.status;throw e}return as==="blob"?r.blob():as==="text"?r.text():r.json()}
+
+/* ---------- load ---------- */
+async function loadAll(){
+  if(!connected()){renderAll();return}
+  $("#st").className="chip";$("#st").textContent="Loading…";
+  const [state,ana,ins,hist,runs]=await Promise.all([
+    ghRaw("data/state.json").catch(e=>{D.err=e.status===401||e.status===403?"auth":D.err;return null}),
+    ghRaw("data/analytics.json").catch(()=>null),ghRaw("data/insights.json").catch(()=>null),
+    ghRaw("data/analytics_history.json").catch(()=>[]),gh(`/repos/${cfg.repo}/actions/runs?per_page=6`).catch(()=>null)]);
+  D={state,ana,ins,hist:hist||[],runs:runs&&runs.workflow_runs||null,err:D.err};
+  renderAll();
+}
+function renderAll(){renderStatus();renderBanners();renderCalendar();renderAnalytics();renderPlan();renderHostMeta();renderRuns()}
+
+function renderStatus(){const c=$("#st");
+  if(!connected()){c.className="chip warn";c.textContent="Not connected";return}
+  const r=D.runs&&D.runs[0];
+  if(!r){c.className="chip";c.textContent="Connected";return}
+  if(r.status!=="completed"){c.className="chip warn";c.textContent="⏳ Engine chal raha hai";return}
+  if(r.conclusion==="success"){c.className="chip ok";c.textContent="✅ Last run OK · "+ago(r.updated_at)}else{c.className="chip bad";c.textContent="❌ Last run "+r.conclusion}
+}
+function renderBanners(){const b=[];
+  if(!connected())b.push(["info","Pehle <b>Setup &amp; Run</b> tab mein engine repo + token daalein."]);
+  else if(D.err==="auth")b.push(["bad","GitHub token ya repo access galat hai (Setup tab)."]);
+  else if(!D.state)b.push(["info","Abhi engine ka data nahi mila. Setup tab se pehle <b>Dry-run</b> / <b>Daily</b> chalayein."]);
+  const r=D.runs&&D.runs[0];if(r&&r.status==="completed"&&r.conclusion==="failure")b.push(["bad",`Last run fail hua. <a href="${esc(r.html_url)}" target="_blank" rel="noopener">Logs dekhein</a>`]);
+  if(D.state){const J=Object.values(D.state.jobs);const er=J.filter(j=>j.error);if(er.length)b.push(["warn",`⚠ ${er.length} slot mein error: ${esc(er.slice(0,2).map(j=>j.id+": "+j.error).join(" | "))}`]);
+    const w=J.filter(j=>(j.warnings||[]).length);if(w.length)b.push(["warn",`⚠ ${w.length} script mein aise numbers hain jo news items mein nahi mile. Calendar mein kholkar verify karein.`]);
+    const V=(D.ana&&D.ana.videos)||{};const lock=J.filter(j=>j.video_id&&V[j.video_id]&&V[j.video_id].privacy==="private"&&!j.scheduled);
+    if(lock.length)b.push(["warn",`🔒 ${lock.length} video private hain bina schedule ke. YouTube API audit lock ho sakta hai: Studio app se publish karein.`])}
+  $("#banners").innerHTML=b.map(x=>`<div class="banner ${x[0]}">${x[1]}</div>`).join("")}
+
+/* ---------- calendar ---------- */
+function weekRange(off){const n=new Date(Date.now()+IST);const dow=(n.getUTCDay()+6)%7;const mon=Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate()-dow+off*7)-IST;return[mon,mon+7*864e5]}
+const pill=(t,c)=>`<span class="pill ${c||""}">${t}</span>`;
+function renderCalendar(){const el=$("#calList");
+  if(!D.state){el.innerHTML='<div class="card mut">Data nahi hai.</div>';return}
+  const [a,b]=weekRange(weekOff);
+  const jobs=Object.values(D.state.jobs).filter(j=>{const t=Date.parse(j.publish_at);return t>=a&&t<b&&(kindF==="all"||j.kind===kindF)}).sort((x,y)=>Date.parse(x.publish_at)-Date.parse(y.publish_at));
+  if(!jobs.length){el.innerHTML='<div class="card mut">Is hafte ka plan abhi nahi bana. Daily run chalte hi ban jayega.</div>';return}
+  let html="",last="";
+  for(const j of jobs){const t=Date.parse(j.publish_at),d=DAYF.format(t);
+    if(d!==last){html+=`<div class="day">${d}</div>`;last=d}
+    const v=j.kind!=="community";
+    html+=`<button class="job ${j.kind}" data-id="${esc(j.id)}"><div><span class="kind ${j.kind}">${j.kind.toUpperCase()}</span> <span class="small mut">${TIMEF.format(t)} IST</span></div>
+      <div class="t">${esc(j.title||(j.scripted?(v?"Script ready":"Post text ready"):"Script pending"))}</div>
+      <div class="pills">${pill(j.scripted?"✍ script":"✍ pending",j.scripted?"y":"")}${v?pill(j.rendered?"🎬 video":"🎬 —",j.rendered?"y":""):""}${v?pill(j.uploaded?"⬆ uploaded":"⬆ —",j.uploaded?"y":""):""}${v?pill(j.scheduled?"🗓 scheduled":"🗓 —",j.scheduled?"y":""):""}${j.look?pill("👤 "+esc(j.look.replace(/^look_\d+_|\.jpg$/g,"").replace("_"," / ")),""):""}${(j.warnings||[]).length?pill("⚠ verify","w"):""}${j.error?pill("error","r"):""}</div></button>`}
+  el.innerHTML=html}
+async function openJob(id){const j=D.state.jobs[id];const sh=$("#sheet"),In=$("#sheetIn");
+  const t=Date.parse(j.publish_at);
+  In.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><div><span class="kind ${j.kind}">${j.kind.toUpperCase()}</span> <span class="small mut">${DAYF.format(t)} · ${TIMEF.format(t)} IST</span></div><button class="btn sm" id="shClose">✕</button></div><div id="shBody" class="mut" style="margin-top:10px">Loading…</div>`;
+  sh.classList.add("on");$("#shClose").onclick=()=>sh.classList.remove("on");
+  const body=$("#shBody");
+  try{
+    if(j.kind==="community"){const tx=await ghRaw(`data/community/${id}.txt`,"text");body.className="";body.innerHTML=`<h2>Community post</h2><div class="script">${esc(tx)}</div><div style="margin-top:10px"><button class="btn pri" id="cp1">Copy post text</button></div><p class="small mut">YouTube app &gt; Create &gt; Post mein paste karein (API se community post nahi hoti).</p>`;$("#cp1").onclick=()=>copy(tx.split("\n\nSources:")[0],"Post")}
+    else{const c=await ghRaw(`data/scripts/${id}.json`);const script=(c.scenes||[]).map(s=>(s.chapter?"["+s.chapter+"]\n":"")+s.text).join("\n\n");
+      const tags=(c.hashtags||[]).map(h=>"#"+h.replace(/^#/,"")).join(" ");
+      body.className="";body.innerHTML=`<h2>${esc(c.title)}</h2>${(j.warnings||[]).map(w=>`<div class="banner warn small">⚠ ${esc(w)}</div>`).join("")}${j.error?`<div class="banner bad small">${esc(j.error)}</div>`:""}
+      <p class="small">${esc(c.description)}</p><p class="small mut">🔎 ${esc((c.keywords||[]).join(", "))}<br>${esc(tags)}</p>
+      <h3>Sources</h3>${(c.sources||[]).map(u=>`<div class="small"><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.slice(0,70))}</a></div>`).join("")||'<span class="small mut">—</span>'}
+      <h3>Voiceover script</h3><div class="script">${esc(script)}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="c1">Copy title</button><button class="btn" id="c2">Copy description</button><button class="btn" id="c3">Copy script</button>${j.link?`<a class="btn pri" style="text-decoration:none" href="${esc(j.link)}" target="_blank" rel="noopener">▶ Video</a>`:""}</div>`;
+      $("#c1").onclick=()=>copy(c.title,"Title");$("#c2").onclick=()=>copy(c.description+"\n\n"+tags,"Description");$("#c3").onclick=()=>copy(script,"Script")}
+  }catch(e){body.innerHTML=j.scripted?"Script file nahi padh paye ("+esc(e.message)+")":"Script abhi bani nahi (engine agle run mein banayega)."}
+}
+
+/* ---------- analytics ---------- */
+const trunc=(s,n)=>(s||"").length>n?s.slice(0,n-1)+"…":(s||"");
+const fmt=n=>n==null?"—":Number(n).toLocaleString("en-IN");
+function rowsData(){if(!D.state)return[];const V=(D.ana&&D.ana.videos)||{};
+  return Object.values(D.state.jobs).filter(j=>j.video_id).map(j=>{const v=V[j.video_id]||{},p=(j.look||"").replace(".jpg","").split("_");
+    return{id:j.id,kind:j.kind,title:j.title,t:Date.parse(j.publish_at),hour:new Date(Date.parse(j.publish_at)+IST).getUTCHours(),turban:p.length>3?p[2]:"-",views:v.views||0,likes:v.likes||0,comments:v.comments||0,pct:v.avg_view_pct,subs:v.subs_gained,link:j.link}}).sort((a,b)=>a.t-b.t)}
+function bars(items,cls){const mx=Math.max(1,...items.map(i=>i.v));return items.map(i=>`<div class="bar ${cls||""}"><span class="l">${esc(i.l)}</span><i style="width:${Math.max(2,i.v/mx*100)}%"></i><span>${fmt(i.v)}</span></div>`).join("")}
+function line(vals,labels,color){if(vals.length<2)return'<div class="small mut">Data jama ho raha hai (har Saturday ek point judta hai).</div>';
+  const W=320,Hh=110,p=8,mx=Math.max(...vals),mn=Math.min(...vals),r=(mx-mn)||1;
+  const pts=vals.map((v,i)=>[p+i*(W-2*p)/(vals.length-1),Hh-p-(v-mn)/r*(Hh-2*p)]);
+  return`<svg viewBox="0 0 ${W} ${Hh}" width="100%"><polyline fill="none" stroke="${color}" stroke-width="2.5" points="${pts.map(x=>x.join(",")).join(" ")}"/><polygon fill="${color}22" points="${p},${Hh-p} ${pts.map(x=>x.join(",")).join(" ")} ${W-p},${Hh-p}"/></svg><div class="small mut" style="display:flex;justify-content:space-between"><span>${esc(labels[0])}: ${fmt(vals[0])}</span><span>${esc(labels[labels.length-1])}: ${fmt(vals[vals.length-1])}</span></div>`}
+function renderAnalytics(){
+  const ch=(D.ana&&D.ana.channel)||{},R=rowsData(),J=D.state?Object.values(D.state.jobs):[];
+  const up=J.filter(j=>j.uploaded).length,sc=J.filter(j=>j.scheduled).length,tv=R.reduce((s,r)=>s+r.views,0);
+  $("#kpis").innerHTML=[["Subscribers",ch.subs],["Channel views",ch.views],["Videos",ch.videos],["Avg views/video",R.length?Math.round(tv/R.length):null],["Uploaded (engine)",up],["Scheduled",sc],["Planned slots",J.length],["Errors",J.filter(j=>j.error).length]].map(k=>`<div class="kpi"><span class="small mut">${k[0]}</span><b>${fmt(k[1])}</b></div>`).join("");
+  const last=R.slice(-12).reverse();
+  $("#viewBars").innerHTML=last.length?bars(last.map(r=>({l:DAYF.format(r.t).replace(/^\w+, /,"")+" "+r.kind[0].toUpperCase(),v:r.views})),""):'<div class="small mut">Abhi koi uploaded video nahi.</div>';
+  const H=D.hist||[];$("#growth").innerHTML=`<div class="small mut">Subscribers</div>${line(H.map(h=>h.subs),H.map(h=>h.date),"#3EA6FF")}<div class="small mut" style="margin-top:10px">Total views</div>${line(H.map(h=>h.views),H.map(h=>h.date),"#FF4E45")}`;
+  const G=(key,fn)=>{const g={};R.forEach(r=>{const k=fn?fn(r[key]):r[key];(g[k]=g[k]||[]).push(r)});return Object.entries(g).map(([k,v])=>({l:k+" ("+v.length+")",v:Math.round(v.reduce((s,x)=>s+x.views,0)/v.length)}))};
+  $("#groups").innerHTML=R.length?`<h3>Type</h3>${bars(G("kind"),"b")}<h3>Publish hour (IST)</h3>${bars(G("hour",h=>h+":00"),"b")}<h3>Turban colour</h3>${bars(G("turban"),"b")}`:'<div class="small mut">Data aane par yahan dikhega.</div>';
+  $("#vtable").innerHTML=R.length?`<tr><th>Date</th><th>Type</th><th>Title</th><th>Views</th><th>Likes</th><th>Avg %</th><th>Subs</th></tr>`+R.slice().reverse().map(r=>`<tr><td>${DAYF.format(r.t)}</td><td>${r.kind}</td><td>${r.link?`<a href="${esc(r.link)}" target="_blank" rel="noopener">${esc(trunc(r.title||r.id,34))}</a>`:esc(r.id)}</td><td>${fmt(r.views)}</td><td>${fmt(r.likes)}</td><td>${r.pct??"—"}</td><td>${fmt(r.subs)}</td></tr>`).join(""):"";
+}
+
+/* ---------- next plan ---------- */
+function renderPlan(){const el=$("#planBox"),i=D.ins;let nx="";
+  if(D.state){const [a,b]=weekRange(1);const J=Object.values(D.state.jobs).filter(j=>{const t=Date.parse(j.publish_at);return t>=a&&t<b});
+    if(J.length){const c=k=>J.filter(j=>j.kind===k).length;nx=`<div class="card"><h2>Agla hafte ka calendar</h2><div class="grid g4"><div class="kpi"><span class="small mut">Shorts</span><b>${c("short")}</b></div><div class="kpi"><span class="small mut">Long</span><b>${c("long")}</b></div><div class="kpi"><span class="small mut">Posts</span><b>${c("community")}</b></div><div class="kpi"><span class="small mut">Scripts ready</span><b>${J.filter(j=>j.scripted).length}</b></div></div><p class="small mut">Scripts har slot se ~48 ghante pehle taaza news se banti hain.</p></div>`}}
+  if(!i){el.innerHTML=nx+`<div class="card"><h2>Next plan</h2><p class="mut">Pehla analysis Saturday ko banega (jab kuch videos par data aa jaye). Abhi chahiye to Setup tab se <b>Weekly</b> chalayein.</p></div>`;return}
+  const p=i.next_week_plan||{},li=a=>(a||[]).map(x=>`<li>${esc(x)}</li>`).join(""),acts=(i.action_items||[]);
+  el.innerHTML=nx+`<div class="card"><h2>Summary</h2><p>${esc(i.summary)}</p><div class="small mut">Generated: ${esc((i.generated_at||"").slice(0,16).replace("T"," "))}</div></div>
+  <div class="grid g2"><div class="card"><h3>👍 Kya chala</h3><ul>${li(i.what_worked)}</ul></div><div class="card"><h3>👎 Kya nahi chala</h3><ul>${li(i.what_didnt)}</ul></div></div>
+  <div class="card"><h2>Agle hafte ka plan</h2><p><b>Zyada:</b> ${esc([].concat(p.topics_to_emphasize||[]).join(", "))}</p><p><b>Kam:</b> ${esc([].concat(p.topics_to_avoid||[]).join(", "))}</p><p><b>Title tip:</b> ${esc(p.title_style_tip)}</p><p><b>Slots:</b> ${esc(p.best_slots_note)}</p><p><b>Experiments:</b> ${esc([].concat(p.experiments||[]).join("; "))}</p></div>
+  <div class="card"><h2>Action items</h2>${acts.map((a,k)=>`<label style="display:flex;gap:8px;align-items:flex-start;margin:6px 0;color:#eee;font-size:13px"><input type="checkbox" style="width:auto;margin-top:3px" data-ai="${k}" ${LS.get("ai_"+k+"_"+a.length)?"checked":""}> ${esc(a)}</label>`).join("")||'<span class="small mut">—</span>'}</div>`;
+  $$("[data-ai]",el).forEach(c=>c.onchange=()=>{const a=acts[c.dataset.ai];c.checked?LS.set("ai_"+c.dataset.ai+"_"+a.length,"1"):LS.del("ai_"+c.dataset.ai+"_"+a.length)})}
+
+/* ---------- looks (turban / jacket recolor, same maths as engine) ---------- */
+const TURBAN={maroon:[350,1.7,.55,0],black:[0,0,.28,0],white:[0,.04,.55,.42],mustard:[45,2,1,0],green:[140,1.4,.65,0],orange:[22,2.2,1.05,0],navy:[225,1.9,.5,0],teal:[178,1.4,.75,0],grey:[0,0,.6,.05],pink:[335,1,1.05,.05],purple:[275,1.3,.75,0]};
+const JACKET={navy:[220,.75,2.8,.02],maroon:[350,.75,2.5,.02],green:[150,.65,2.3,.02],brown:[25,.6,2.5,.02],steel_grey:[210,.06,3.6,.07],olive:[70,.55,2.4,.02]};
+const SWC={maroon:"#8b1a2b",black:"#222",white:"#ddd",mustard:"#d4a017",green:"#1f7a3a",orange:"#e8751a",navy:"#1a2a6c",teal:"#138d90",grey:"#777",pink:"#d96aa0",purple:"#6a3fa0",brown:"#6b4423",steel_grey:"#8a949e",olive:"#6b7a2a",original:"#3a3a3a"};
+function rgb2hsv(r,g,b){const mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let h=0;if(d){if(mx===r)h=((g-b)/d)%6;else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h*=60;if(h<0)h+=360}return[h/360*255,mx?d/mx*255:0,mx]}
+function hsv2rgb(h,s,v){h=h/255*360;s/=255;v/=255;const c=v*s,x=c*(1-Math.abs((h/60)%2-1)),m=v-c;let r,g,b;if(h<60)[r,g,b]=[c,x,0];else if(h<120)[r,g,b]=[x,c,0];else if(h<180)[r,g,b]=[0,c,x];else if(h<240)[r,g,b]=[0,x,c];else if(h<300)[r,g,b]=[x,0,c];else[r,g,b]=[c,0,x];return[(r+m)*255,(g+m)*255,(b+m)*255]}
+function morph(m,w,h,r,mx){const t=new Uint8Array(m.length),o=new Uint8Array(m.length);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let v=mx?0:255;for(let k=-r;k<=r;k++){const xx=x+k;if(xx<0||xx>=w)continue;const q=m[y*w+xx];v=mx?(q>v?q:v):(q<v?q:v)}t[y*w+x]=v}
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let v=mx?0:255;for(let k=-r;k<=r;k++){const yy=y+k;if(yy<0||yy>=h)continue;const q=t[yy*w+x];v=mx?(q>v?q:v):(q<v?q:v)}o[y*w+x]=v}return o}
+function blurF(m,w,h,r){const t=new Float32Array(m.length),o=new Float32Array(m.length),n=2*r+1;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let s=0;for(let k=-r;k<=r;k++){const xx=Math.min(w-1,Math.max(0,x+k));s+=m[y*w+xx]}t[y*w+x]=s/n}
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){let s=0;for(let k=-r;k<=r;k++){const yy=Math.min(h-1,Math.max(0,y+k));s+=t[yy*w+x]}o[y*w+x]=s/n/255}return o}
+function applyLook(img,tN,jN,scale){
+  const W=Math.round(img.naturalWidth*scale),Hh=Math.round(img.naturalHeight*scale);
+  const cv=document.createElement("canvas");cv.width=W;cv.height=Hh;const cx=cv.getContext("2d",{willReadFrequently:true});cx.drawImage(img,0,0,W,Hh);
+  if(tN==="original"&&jN==="original")return cv;
+  const id=cx.getImageData(0,0,W,Hh),px=id.data,n=W*Hh,H3=new Float32Array(n*3);
+  for(let i=0;i<n;i++){const q=rgb2hsv(px[i*4],px[i*4+1],px[i*4+2]);H3[i*3]=q[0];H3[i*3+1]=q[1];H3[i*3+2]=q[2]}
+  const out=new Uint8ClampedArray(px);
+  const paint=(m,hue,sat,vs,va,isScale)=>{for(let i=0;i<n;i++){const a=m[i];if(a<.004)continue;const hh=hue/360*255,s2=isScale?Math.min(255,H3[i*3+1]*sat):sat*255,v2=Math.min(255,Math.max(0,H3[i*3+2]*vs+va*255)),c=hsv2rgb(hh,s2,v2);
+      for(let k=0;k<3;k++)out[i*4+k]=px[i*4+k]*(1-a)+c[k]*a}};
+  if(tN!=="original"){const m=new Uint8Array(n);
+    for(let y=0;y<Hh;y++)for(let x=0;x<W;x++){const i=y*W+x;if(y<.40*Hh&&x>.28*W&&x<.65*W){const h=H3[i*3],s=H3[i*3+1],v=H3[i*3+2];if(h>120&&h<180&&s>35&&v>50)m[i]=255}}
+    const mk=blurF(morph(morph(m,W,Hh,Math.max(1,Math.round(4*scale)),1),W,Hh,Math.max(1,Math.round(2*scale)),0),W,Hh,Math.max(1,Math.round(1.5*scale)));
+    const t=TURBAN[tN];paint(mk,t[0],t[1],t[2],t[3],true)}
+  if(jN!=="original"){const oc=document.createElement("canvas");oc.width=W;oc.height=Hh;const o2=oc.getContext("2d",{willReadFrequently:true}),f=W/1448,g=Hh/1086;
+    o2.fillStyle="#000";o2.fillRect(0,0,W,Hh);o2.fillStyle="#fff";o2.beginPath();
+    [[350,545],[480,522],[610,505],[850,505],[1010,522],[1140,545],[1190,600],[1232,700],[1272,800],[1312,900],[1336,1000],[1342,1086],[62,1086],[70,1000],[130,900],[215,800],[270,740],[295,700],[322,620]].forEach((p,k)=>k?o2.lineTo(p[0]*f,p[1]*g):o2.moveTo(p[0]*f,p[1]*g));o2.closePath();o2.fill();
+    o2.fillStyle="#000";[[640,500,832,1086],[525,935,815,1086],[815,985,915,1086]].forEach(r=>o2.fillRect(r[0]*f,r[1]*g,(r[2]-r[0])*f,(r[3]-r[1])*g));
+    const pd=o2.getImageData(0,0,W,Hh).data,m=new Uint8Array(n);for(let i=0;i<n;i++)if(pd[i*4]>127&&H3[i*3+2]<110)m[i]=255;
+    const mk=blurF(m,W,Hh,Math.max(1,Math.round(1.2*scale)));const j=JACKET[jN];paint(mk,j[0],j[1],j[2],j[3],false)}
+  cx.putImageData(new ImageData(out,W,Hh),0,0);return cv}
+
+let hostLoading=null;
+function ensureHost(){if(hostImg)return Promise.resolve(hostImg);if(hostLoading)return hostLoading;
+  hostLoading=(async()=>{if(!connected())throw new Error("Not connected");const b=await ghRaw("host.png","blob");const u=URL.createObjectURL(b);const im=new Image();await new Promise((ok,no)=>{im.onload=ok;im.onerror=no;im.src=u});hostImg=im;return im})().finally(()=>hostLoading=null);return hostLoading}
+function buildSwatches(){const mk=(el,names,key)=>{el.innerHTML=["original",...names].map(n=>`<button data-n="${n}" class="${look[key]===n?"on":""}" style="background:${SWC[n]}">${n.replace("_"," ")}</button>`).join("");$$("button",el).forEach(b=>b.onclick=()=>{look[key]=b.dataset.n;buildSwatches();drawHost();drawThumb()})};
+  mk($("#turbanSw"),Object.keys(TURBAN),"t");mk($("#jacketSw"),Object.keys(JACKET),"j")}
+let hostTimer;
+function drawHost(){clearTimeout(hostTimer);hostTimer=setTimeout(async()=>{const msg=$("#hostMsg");const cv=$("#hostCanvas"),c=cv.getContext("2d");
+  try{const im=hostImg||await ensureHost();msg.textContent="";const r=applyLook(im,look.t,look.j,.5);cv.width=r.width;cv.height=r.height;c.drawImage(r,0,0)}
+  catch(e){msg.innerHTML=(connected()?"Repo se <code>host.png</code> nahi mili. ":"Connect karein ya preview ke liye photo chunein: ")+'<input type="file" id="hostUp" accept="image/*" style="margin-top:8px">';const f=$("#hostUp");if(f)f.onchange=()=>loadLocal(f.files[0],true)}},30)}
+function loadLocal(file,toHost){if(!file)return;const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{if(toHost){hostImg=im;drawHost();drawThumb()}else{upImg=im;drawThumb()}};im.src=u}
+function renderHostMeta(){const r=(D.state&&D.state.recent_looks)||[];$("#recentLooks").innerHTML=r.length?r.slice().reverse().map(x=>pill(esc(x.replace(/^look_\d+_|\.jpg$/g,"").replace("_"," / ")))).join(" "):"Abhi koi video nahi bana."}
+
+/* ---------- thumbnail ---------- */
+const THEMES={bullish:["#06261a","#22c55e"],gold:["#221804","#facc15"],alert:["#2e080a","#ef4444"],blue:["#061434","#3b82f6"]};
+function hexA(h,a){const n=parseInt(h.slice(1),16);return`rgba(${n>>16},${n>>8&255},${n&255},${a})`}
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+let thTimer;
+function drawThumb(){clearTimeout(thTimer);thTimer=setTimeout(()=>{const cv=$("#thCanvas"),c=cv.getContext("2d"),W=1280,H=720,[bg,acc]=THEMES[th.theme];
+  c.fillStyle=bg;c.fillRect(0,0,W,H);const g=c.createRadialGradient(950,380,30,950,380,430);g.addColorStop(0,hexA(acc,.5));g.addColorStop(1,hexA(acc,0));c.fillStyle=g;c.fillRect(0,0,W,H);
+  let src=null;if($("#thSrc").value==="upload")src=upImg&&(()=>{const o=document.createElement("canvas");o.width=upImg.naturalWidth;o.height=upImg.naturalHeight;o.getContext("2d").drawImage(upImg,0,0);return o})();
+  else if(hostImg)src=applyLook(hostImg,look.t,look.j,1);
+  if(src){const iw=src.width,ih=src.height,sx=iw*.18,sw=iw*.62,sh=ih*.8,cw=sw*H/sh,off=document.createElement("canvas");off.width=Math.round(cw);off.height=H;const o=off.getContext("2d");o.drawImage(src,sx,0,sw,sh,0,0,cw,H);
+    o.globalCompositeOperation="destination-in";const fg=o.createLinearGradient(0,0,cw,0);fg.addColorStop(0,"rgba(0,0,0,0)");fg.addColorStop(Math.min(1,170/cw),"rgba(0,0,0,1)");fg.addColorStop(1,"rgba(0,0,0,1)");o.fillStyle=fg;o.fillRect(0,0,cw,H);c.drawImage(off,W-cw+40,0)}
+  let pts=[[50,690],[200,640],[300,665],[470,560],[560,590],[700,470]];const al=th.theme==="alert";if(al)pts=pts.map(p=>[p[0],1160-p[1]]);
+  c.strokeStyle=acc;c.lineWidth=10;c.lineJoin="round";c.lineCap="round";c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.stroke();
+  const e=pts[5],sg=al?-1:1;c.fillStyle=acc;c.beginPath();c.moveTo(e[0],e[1]);c.lineTo(e[0]-50,e[1]+8*sg);c.lineTo(e[0]-12,e[1]+42*sg);c.closePath();c.fill();
+  const words=($("#thText").value||"S DEEP").toUpperCase().split(/\s+/).filter(Boolean);let lines=[],sz=56;
+  for(sz=150;sz>=56;sz-=6){c.font=`900 ${sz}px Inter,"Segoe UI",Arial,sans-serif`;lines=[];let cur="";for(const w of words){const t=(cur+" "+w).trim();if(c.measureText(t).width<=640)cur=t;else{if(cur)lines.push(cur);cur=w}}if(cur)lines.push(cur);
+    if(lines.length<=3&&lines.every(l=>c.measureText(l).width<=640)&&lines.length*sz*1.08<=430)break}
+  c.textBaseline="top";c.lineJoin="round";let y=150+(430-lines.length*sz*1.08)/2;
+  lines.forEach((l,i)=>{c.lineWidth=18;c.strokeStyle="#000";c.strokeText(l,50,y);c.fillStyle=(i%2===1||lines.length===1)?acc:"#fff";c.fillText(l,50,y);y+=sz*1.08});
+  const bt=($("#thBadge").value||"S DEEP").toUpperCase().slice(0,16);c.font='800 40px Inter,"Segoe UI",Arial,sans-serif';c.textBaseline="middle";const bw=c.measureText(bt).width+50;
+  c.fillStyle=acc;rr(c,48,40,bw,72,16);c.fill();c.fillStyle="#000";c.textAlign="center";c.fillText(bt,48+bw/2,78);
+  c.textAlign="right";c.font='800 46px Inter,"Segoe UI",Arial,sans-serif';c.lineWidth=10;c.strokeStyle="#000";c.strokeText("S DEEP",W-40,H-36);c.fillStyle="#fff";c.fillText("S DEEP",W-40,H-36);c.textAlign="left";
+  c.strokeStyle=acc;c.lineWidth=8;c.strokeRect(4,4,W-8,H-8)},40)}
+function initThumb(){$("#thTheme").innerHTML=Object.keys(THEMES).map(k=>`<button data-n="${k}" class="${th.theme===k?"on":""}" style="background:${THEMES[k][1]}33">${k}</button>`).join("");
+  $$("#thTheme button").forEach(b=>b.onclick=()=>{th.theme=b.dataset.n;initThumb();drawThumb()});
+  ["thText","thBadge"].forEach(i=>$("#"+i).oninput=drawThumb);
+  $("#thSrc").onchange=()=>{const u=$("#thSrc").value==="upload";$("#thFile").style.display=u?"block":"none";if(u&&!upImg)$("#thFile").click();drawThumb()};
+  $("#thFile").onchange=()=>loadLocal($("#thFile").files[0],false);
+  $("#thDl").onclick=()=>{$("#thCanvas").toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="thumbnail.png";a.click()},"image/png")};drawThumb()}
+
+/* ---------- setup / runs ---------- */
+function renderRuns(){const el=$("#runs");if(!D.runs){el.textContent=connected()?"Abhi koi run nahi.":"Connect karein.";return}
+  el.innerHTML=D.runs.map(r=>{const ic=r.status!=="completed"?"⏳":r.conclusion==="success"?"✅":"❌";return`<div style="margin:6px 0">${ic} <a href="${esc(r.html_url)}" target="_blank" rel="noopener">${esc(r.event==="schedule"?"scheduled":"manual")} · ${esc(r.display_title||r.name)}</a> <span class="mut">· ${ago(r.created_at)}</span></div>`}).join("")||"—"}
+async function runMode(mode){if(!connected())return toast("Pehle connect karein");
+  if(!confirm(mode==="daily"?"Daily run: agle 48 ghante ke videos banakar YouTube par private+schedule upload honge. Chalayein?":"Run '"+mode+"' chalayein?"))return;
+  try{await gh(`/repos/${cfg.repo}/actions/workflows/weekly.yml/dispatches`,{method:"POST",body:JSON.stringify({ref:cfg.branch,inputs:{mode}})});toast("Start ho gaya ✔ (5-30 min)");setTimeout(loadAll,6000)}
+  catch(e){toast("Fail: "+e.message+(e.status===404?" (weekly.yml path/branch check karein)":e.status===403?" (token mein Actions: write chahiye)":""))}}
+function initSetup(){$("#repo").value=cfg.repo;$("#branch").value=cfg.branch;$("#token").value=cfg.token;
+  $("#saveCfg").onclick=async()=>{cfg={repo:$("#repo").value.trim(),branch:$("#branch").value.trim()||"main",token:$("#token").value.trim()};LS.set("sd_repo",cfg.repo);LS.set("sd_branch",cfg.branch);LS.set("sd_token",cfg.token);
+    const m=$("#cfgMsg");m.textContent="Check ho raha hai…";try{const r=await gh("/repos/"+cfg.repo);m.innerHTML=`✅ Connected: <b>${esc(r.full_name)}</b> (${r.private?"private ✔":"<span style='color:#FF8A83'>PUBLIC: data sabko dikhega, private kar dein</span>"})`;hostImg=null;loadAll()}catch(e){m.innerHTML="❌ "+esc(e.message)+" — repo naam / token / permissions check karein"}};
+  $("#clearCfg").onclick=()=>{["sd_repo","sd_token","sd_branch"].forEach(LS.del);cfg={repo:"",branch:"main",token:""};D={state:null,ana:null,ins:null,hist:[],runs:null,err:""};initSetup();renderAll();toast("Disconnected")};
+  $$("[data-run]").forEach(b=>b.onclick=()=>runMode(b.dataset.run))}
+
+/* ---------- wiring ---------- */
+$$("#tabs button").forEach(b=>b.onclick=()=>{$$("#tabs button").forEach(x=>x.classList.toggle("on",x===b));$$(".panel").forEach(p=>p.classList.toggle("on",p.id==="p-"+b.dataset.tab));
+  if(b.dataset.tab==="host")drawHost();if(b.dataset.tab==="thumb"){ensureHost().then(drawThumb).catch(()=>{});drawThumb()}window.scrollTo(0,0)});
+$$("#weekSeg button").forEach(b=>b.onclick=()=>{weekOff=+b.dataset.w;$$("#weekSeg button").forEach(x=>x.classList.toggle("on",x===b));renderCalendar()});
+$$("#kindSeg button").forEach(b=>b.onclick=()=>{kindF=b.dataset.k;$$("#kindSeg button").forEach(x=>x.classList.toggle("on",x===b));renderCalendar()});
+$("#calList").onclick=e=>{const j=e.target.closest(".job");if(j)openJob(j.dataset.id)};
+$("#sheet").onclick=e=>{if(e.target.id==="sheet")$("#sheet").classList.remove("on")};
+$("#refreshBtn").onclick=()=>{toast("Refresh…");loadAll()};
+let deferred=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferred=e;$("#installBtn").style.display="inline-block"});
+$("#installBtn").onclick=async()=>{if(deferred){deferred.prompt();deferred=null;$("#installBtn").style.display="none"}};
+if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+buildSwatches();initThumb();initSetup();loadAll();
+</script>
+</body>
+</html>
